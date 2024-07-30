@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState } from 'react';
-import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
 import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
@@ -16,10 +15,10 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
-	const [state, setState] = useState(defaultArticleState);
+	const [formState, setFormState] = useState(defaultArticleState);
 
 	function DataApp(option: Partial<ArticleStateType>) {
-		setState((prevState) => ({
+		setFormState((prevState) => ({
 			...prevState,
 			...option,
 		}));
@@ -27,14 +26,14 @@ const App = () => {
 
 	return (
 		<div
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={
 				{
-					'--font-family': state.fontFamilyOption.value,
-					'--font-size': state.fontSizeOption.value,
-					'--font-color': state.fontColor.value,
-					'--container-width': state.contentWidth.value,
-					'--bg-color': state.backgroundColor.value,
+					'--font-family': formState.fontFamilyOption.value,
+					'--font-size': formState.fontSizeOption.value,
+					'--font-color': formState.fontColor.value,
+					'--container-width': formState.contentWidth.value,
+					'--bg-color': formState.backgroundColor.value,
 				} as CSSProperties
 			}>
 			<ArticleParamsForm

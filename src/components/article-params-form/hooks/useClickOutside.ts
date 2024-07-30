@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-export const useClickOutside = (handler: () => void) => {
+export const useClickOutside = (handler: () => void, isMenuOpen: boolean) => {
 	const ref = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
 		const handleClick = (event: MouseEvent) => {
+			if (!isMenuOpen) return;
+
 			if (ref.current && !ref.current.contains(event.target as Node)) {
 				handler();
 			}
@@ -15,6 +17,6 @@ export const useClickOutside = (handler: () => void) => {
 		return () => {
 			document.removeEventListener('mousedown', handleClick);
 		};
-	}, [handler]);
+	}, [handler, isMenuOpen]);
 	return ref;
 };

@@ -5,12 +5,12 @@ import styles from './ArrowButton.module.scss';
 /** Функция для обработки открытия/закрытия формы */
 export type OnClick = () => void;
 export type ArrowButtonProps = {
-	isOpen: boolean;
+	isMenuOpen: boolean;
 	onClick: OnClick;
 };
 
 export const ArrowButton: React.FC<ArrowButtonProps> = ({
-	isOpen,
+	isMenuOpen,
 	onClick,
 }) => {
 	return (
@@ -20,11 +20,11 @@ export const ArrowButton: React.FC<ArrowButtonProps> = ({
 			role='button'
 			aria-label='Открыть/Закрыть форму параметров статьи'
 			tabIndex={0}
-			className={`${styles.container} ${isOpen && styles.container_open}`}>
+			className={`${styles.container} ${isMenuOpen && styles.container_open}`}>
 			<img
 				src={arrow}
 				alt='иконка стрелочки'
-				className={`${styles.arrow} ${isOpen && styles.arrow_open}`}
+				className={`${styles.arrow} ${isMenuOpen && styles.arrow_open}`}
 			/>
 		</div>
 	);

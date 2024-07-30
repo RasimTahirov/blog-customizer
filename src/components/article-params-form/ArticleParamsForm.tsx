@@ -30,7 +30,7 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 	state,
 	updateArticle,
 }) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [selectOption, setSelectOption] = useState({
 		fontFamilyOption: state.fontFamilyOption,
 		fontSizeOption: state.fontSizeOption,
@@ -38,10 +38,10 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 		backgroundColor: state.backgroundColor,
 		contentWidth: state.contentWidth,
 	});
-	const ref = useClickOutside(() => setIsOpen(false));
+	const ref = useClickOutside(() => setIsMenuOpen(false), isMenuOpen);
 
 	const openMenu = () => {
-		setIsOpen(!isOpen);
+		setIsMenuOpen(!isMenuOpen);
 	};
 
 	const handleSelectChange = (key: string, selectOptions: OptionType) => {
@@ -54,22 +54,24 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 	const onSumbit = (event: FormEvent) => {
 		event.preventDefault();
 		updateArticle(selectOption);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	const onReset = (event: FormEvent) => {
 		event.preventDefault();
 		updateArticle(defaultArticleState);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 		setSelectOption(defaultArticleState);
 	};
 
 	return (
 		<>
-			<ArrowButton onClick={openMenu} isOpen={isOpen} />
+			<ArrowButton onClick={openMenu} isMenuOpen={isMenuOpen} />
 			<aside
 				ref={ref}
-				className={`${styles.container} ${isOpen && styles.container_open}`}>
+				className={`${styles.container} ${
+					isMenuOpen && styles.container_open
+				}`}>
 				<form className={styles.form} onSubmit={onSumbit} onReset={onReset}>
 					<div className={styles.containerOption}>
 						<Text size={31} weight={800} uppercase={true}>
