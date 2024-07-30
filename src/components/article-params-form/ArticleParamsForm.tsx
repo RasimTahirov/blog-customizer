@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useClickOutside } from './hooks/useClickOutside';
 
 import { Select } from '../select';
@@ -11,6 +11,7 @@ import {
 	ArticleStateType,
 	backgroundColors,
 	contentWidthArr,
+	defaultArticleState,
 	fontColors,
 	fontFamilyOptions,
 	fontSizeOptions,
@@ -19,19 +20,22 @@ import {
 
 import styles from './ArticleParamsForm.module.scss';
 
+type UpdateArticleFunction = (options: Partial<ArticleStateType>) => void;
 type ArticleParamsFormProps = {
 	state: ArticleStateType;
+	updateArticle: UpdateArticleFunction;
 };
 
 export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 	state,
+	updateArticle,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectOption, setSelectOption] = useState({
-		fontFamily: state.fontFamilyOption,
-		fontSize: state.fontSizeOption,
+		fontFamilyOption: state.fontFamilyOption,
+		fontSizeOption: state.fontSizeOption,
 		fontColor: state.fontColor,
-		backgroundColorOption: state.backgroundColor,
+		backgroundColor: state.backgroundColor,
 		contentWidth: state.contentWidth,
 	});
 	const ref = useClickOutside(() => setIsOpen(false));
@@ -47,13 +51,26 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 		}));
 	};
 
+	const onSumbit = (event: FormEvent) => {
+		event.preventDefault();
+		updateArticle(selectOption);
+		setIsOpen(false);
+	};
+
+	const onReset = (event: FormEvent) => {
+		event.preventDefault();
+		updateArticle(defaultArticleState);
+		setIsOpen(false);
+		setSelectOption(defaultArticleState);
+	};
+
 	return (
 		<>
 			<ArrowButton onClick={openMenu} isOpen={isOpen} />
 			<aside
 				ref={ref}
 				className={`${styles.container} ${isOpen && styles.container_open}`}>
-				<form className={styles.form}>
+				<form className={styles.form} onSubmit={onSumbit} onReset={onReset}>
 					<div className={styles.containerOption}>
 						<Text size={31} weight={800} uppercase={true}>
 							задайте параметры
@@ -61,17 +78,19 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 						<Select
 							title='шрифт'
 							options={fontFamilyOptions}
-							selected={selectOption.fontFamily}
+							selected={selectOption.fontFamilyOption}
 							onChange={(selected) =>
-								handleSelectChange('fontFamily', selected)
+								handleSelectChange('fontFamilyOption', selected)
 							}
 						/>
 						<RadioGroup
 							name='размер шрифта'
 							title='размер шрифта'
 							options={fontSizeOptions}
-							selected={selectOption.fontSize}
-							onChange={(selected) => handleSelectChange('fontSize', selected)}
+							selected={selectOption.fontSizeOption}
+							onChange={(selected) =>
+								handleSelectChange('fontSizeOption', selected)
+							}
 						/>
 						<Select
 							title='цвет шрифта'
@@ -83,9 +102,9 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 						<Select
 							title='цвет фона'
 							options={backgroundColors}
-							selected={selectOption.backgroundColorOption}
+							selected={selectOption.backgroundColor}
 							onChange={(selected) =>
-								handleSelectChange('backgroundColorOption', selected)
+								handleSelectChange('backgroundColor', selected)
 							}
 						/>
 						<Select
