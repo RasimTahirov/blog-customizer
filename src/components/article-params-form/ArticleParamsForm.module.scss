@@ -4,12 +4,18 @@
 	width: 616px;
 	height: 100%;
 	overflow: scroll;
+	overflow-x: hidden;
 	transform: translate(-616px);
 	transition: transform 0.5s ease;
 }
 
 .container_open {
 	transform: translate(0);
+}
+
+.containerOption {
+	display: grid;
+	gap: 50px;
 }
 
 .form {
